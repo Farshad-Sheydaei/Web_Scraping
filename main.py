@@ -1,7 +1,13 @@
 import requests
+from bs4 import BeautifulSoup
 
-page_number = 1
 url = 'https://www.imdb.com/chart/top/'
-source = requests.get(url)
+source = requests.get(url).text
 
-print(source)
+soup = BeautifulSoup(source, 'html.parser')
+
+movie_name = soup.select('td.titleColumn a')
+
+rating = soup.find_all('td', attrs={"class": "ratingColumn imdbRating"})
+
+year = soup.find_all('span', attrs={'class': 'secondaryInfo'})
